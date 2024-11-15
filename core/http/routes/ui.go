@@ -395,6 +395,15 @@ func RegisterUIRoutes(app *fiber.App,
 		return c.Render("views/text2image", summary)
 	})
 
+	app.Get("/login", func(c *fiber.Ctx) error {
+		summary := fiber.Map{
+			"Title":   "LocalAI - Login",
+			"Version": internal.PrintableVersion(),
+		}
+
+		return c.Render("views/login", summary)
+	})
+
 	app.Get("/tts/:model", func(c *fiber.Ctx) error {
 		backendConfigs := cl.GetAllBackendConfigs()
 
