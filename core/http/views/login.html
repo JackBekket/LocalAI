@@ -1,47 +1,30 @@
-<!DOCTYPE html>
-<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Open Authenticated Website</title>
+    <title>LocalAI Login</title>
 </head>
 <body>
-    <h1>Open Authenticated Website</h1>
-    <label for="token">Enter Bearer Token:</label>
+    <h1>LocalAI Login</h1>
+    <label for="token">Enter API Key:</label>
     <input type="text" id="token" placeholder="Enter token" />
-    <button onclick="openAuthenticatedSite()">Open Site</button>
+    <button onclick="saveAndRedirect()">Authorize</button>
 
     <script>
-        function openAuthenticatedSite() {
+        function saveAndRedirect() {
             const token = document.getElementById('token').value;
             if (!token) {
                 alert('Please enter a valid token!');
                 return;
             }
+    
+            const expiryDays = 7; 
+            const expiryDate = new Date();
+            expiryDate.setTime(expiryDate.getTime() + (expiryDays * 24 * 60 * 60 * 1000));
+            document.cookie = `apiToken=${token}; expires=${expiryDate.toUTCString()}; path=/; secure;`;
 
-            const url = 'https://your-website-url.com'; // Replace with the actual URL
-            const headers = new Headers();
-            headers.append('Authorization', 'Bearer ' + token);
-
-            const requestOptions = {
-                method: 'GET',
-                headers: headers,
-            };
-
-            fetch(url, requestOptions)
-                .then(response => {
-                    if (response.ok) {
-                        // Open new tab or window
-                        const newWindow = window.open(url, '_blank');
-                        newWindow.focus();
-                    } else {
-                        alert('Failed to authenticate with the provided token.');
-                    }
-                })
-                .catch(error => {
-                    alert('Error opening the site: ' + error.message);
-                });
+            window.location.href = '/';
         }
     </script>
+    
 </body>
 </html>
